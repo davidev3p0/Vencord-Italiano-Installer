@@ -1,0 +1,93 @@
+name: Pubblica installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versione da pubblicare (es. 1.0.0)"
+        required: true
+        default: "1.0.0"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    name: Test, build e release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Configura Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Format check
+        shell: pwsh
+        run: |
+          $files = gofmt -l .
+          if ($files) {
+            Write-Host $files
+            throw "gofmt richiesto"
+          }
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build Windows
+        shell: pwsh
+        run: |
+          $commit = (git rev-parse --short HEAD).Trim()
+          $version = "${{ inputs.version }}"
+          go build -trimpath -ldflags "-s -w -X main.commit=$commit -X main.version=$version" -o Vencord-Italiano-Setup.exe .
+
+      - name: Genera SHA-256
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash Vencord-Italiano-Setup.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          $line = $hash + "  Vencord-Italiano-Setup.exe" + [Environment]::NewLine
+          [IO.File]::WriteAllText("Vencord-Italiano-Setup.exe.sha256", $line)
+
+      - name: Carica artifact verificabile
+        id: upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: Vencord-Italiano-Setup-${{ inputs.version }}
+          path: |
+            Vencord-Italiano-Setup.exe
+            Vencord-Italiano-Setup.exe.sha256
+          if-no-files-found: error
+
+      - name: Attesta provenienza build
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: Vencord-Italiano-Setup.exe
+
+      - name: Pubblica GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $tag = "v${{ inputs.version }}"
+          $notes = @"
+          Vencord Italiano Installer v${{ inputs.version }}
+
+          Installer Windows open source per Vencord Italiano.
+
+          Code signing policy: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/CODE_SIGNING_POLICY.md
+          Privacy policy: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/PRIVACY.md
+          Security policy: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/SECURITY.md
+
+          Questa prima release può essere non firmata. Le release firmate useranno SignPath secondo la Code signing policy del progetto.
+          "@
+          gh release create $tag Vencord-Italiano-Setup.exe Vencord-Italiano-Setup.exe.sha256 --target "${{ github.sha }}" --title "Vencord Italiano Installer v${{ inputs.version }}" --notes $notes

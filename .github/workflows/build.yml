@@ -1,0 +1,73 @@
+name: Build installer
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Format check
+        shell: bash
+        run: test -z "$(gofmt -l .)"
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+  windows:
+    name: Build Windows
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        shell: pwsh
+        run: |
+          $commit = (git rev-parse --short HEAD).Trim()
+          go build -trimpath -ldflags "-s -w -X main.commit=$commit" -o Vencord-Italiano-Setup.exe .
+
+      - name: SHA-256
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash Vencord-Italiano-Setup.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          $line = $hash + "  Vencord-Italiano-Setup.exe" + [Environment]::NewLine
+          [IO.File]::WriteAllText("Vencord-Italiano-Setup.exe.sha256", $line)
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: Vencord-Italiano-Installer-Windows
+          path: |
+            Vencord-Italiano-Setup.exe
+            Vencord-Italiano-Setup.exe.sha256
+          if-no-files-found: error
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: Vencord-Italiano-Setup.exe

@@ -10,3 +10,10 @@ The installer contacts GitHub only to:
 The installer does not upload Discord credentials, account data, messages, settings or personal files.
 
 Vencord Italiano itself has its own functionality and optional settings. This installer does not change the user's Vencord settings except by installing or repairing the runtime files.
+
+
+## Network communication
+
+This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it.
+
+When the user starts installation, repair or update, the installer contacts GitHub to retrieve public release metadata and download the required Vencord Italiano runtime files. No other project-specific network service is used.

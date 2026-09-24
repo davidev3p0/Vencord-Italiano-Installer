@@ -8,9 +8,9 @@ Official Windows release binaries are built only by GitHub Actions from this pub
 
 ## Roles
 
-- Committer: davidev3p0
-- Reviewer: davidev3p0
-- Approver: davidev3p0
+- Authors / committers: [davidev3p0](https://github.com/davidev3p0)
+- Reviewers: [davidev3p0](https://github.com/davidev3p0)
+- Approvers: [davidev3p0](https://github.com/davidev3p0)
 
 The project currently has one maintainer. If more maintainers are added, these roles will be separated where practical before they participate in release signing.
 

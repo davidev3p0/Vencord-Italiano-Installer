@@ -24,11 +24,13 @@ Le impostazioni personali di Vencord non vengono eliminate.
 
 Il progetto usa solo la libreria standard Go e non contiene packer, UPX, cifratura dell'eseguibile, offuscamento, script PowerShell eseguiti sul PC dell'utente o tecniche di bypass antivirus.
 
-Consulta:
+## Code signing policy
 
-- [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md)
-- [PRIVACY.md](PRIVACY.md)
-- [SECURITY.md](SECURITY.md)
+Free code signing provided by SignPath.io, certificate by SignPath Foundation.
+
+- [Code signing policy completa](CODE_SIGNING_POLICY.md)
+- [Privacy policy](PRIVACY.md)
+- [Security policy](SECURITY.md)
 
 ## Build locale
 

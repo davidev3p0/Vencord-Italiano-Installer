@@ -14,9 +14,9 @@ permissions:
   attestations: write
 
 jobs:
-  release:
-    name: Test, build e release
-    runs-on: windows-latest
+  test:
+    name: Controlli sorgente
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -30,19 +30,36 @@ jobs:
           go-version-file: go.mod
 
       - name: Format check
-        shell: pwsh
+        shell: bash
         run: |
-          $files = gofmt -l .
-          if ($files) {
-            Write-Host $files
-            throw "gofmt richiesto"
-          }
+          files="$(gofmt -l .)"
+          if [ -n "$files" ]; then
+            echo "$files"
+            echo "ERRORE: gofmt richiesto"
+            exit 1
+          fi
 
       - name: Vet
         run: go vet ./...
 
       - name: Test
         run: go test ./...
+
+  release:
+    name: Build e release Windows
+    needs: test
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Configura Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
 
       - name: Build Windows
         shell: pwsh

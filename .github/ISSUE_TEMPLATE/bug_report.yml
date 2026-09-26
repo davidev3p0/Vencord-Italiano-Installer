@@ -1,0 +1,65 @@
+name: Bug report
+description: Segnala un problema riproducibile dell'installer
+title: "[Bug] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per la segnalazione. Non includere token Discord, credenziali o dati personali.
+  - type: input
+    id: installer-version
+    attributes:
+      label: Versione installer
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: discord
+    attributes:
+      label: Client Discord
+      options:
+        - Stable
+        - Canary
+        - PTB
+        - Più di uno
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Versione Windows
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+  - type: dropdown
+    id: operation
+    attributes:
+      label: Operazione
+      options:
+        - Installazione / aggiornamento
+        - Riparazione
+        - Disinstallazione
+        - Avvio installer
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passaggi per riprodurre
+      description: Descrivi esattamente cosa hai fatto.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Risultato atteso
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Risultato ottenuto / errore
+      description: Incolla il messaggio completo, rimuovendo dati sensibili.
+    validations:
+      required: true

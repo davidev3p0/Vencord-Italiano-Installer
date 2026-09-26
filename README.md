@@ -3,30 +3,32 @@
 [![Build](https://github.com/davidev3p0/Vencord-Italiano-Installer/actions/workflows/build.yml/badge.svg)](https://github.com/davidev3p0/Vencord-Italiano-Installer/actions/workflows/build.yml)
 [![Release](https://github.com/davidev3p0/Vencord-Italiano-Installer/actions/workflows/release.yml/badge.svg)](https://github.com/davidev3p0/Vencord-Italiano-Installer/actions/workflows/release.yml)
 [![Latest release](https://img.shields.io/github/v/release/davidev3p0/Vencord-Italiano-Installer)](https://github.com/davidev3p0/Vencord-Italiano-Installer/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/davidev3p0/Vencord-Italiano-Installer/total)](https://github.com/davidev3p0/Vencord-Italiano-Installer/releases)
+[![Stars](https://img.shields.io/github/stars/davidev3p0/Vencord-Italiano-Installer)](https://github.com/davidev3p0/Vencord-Italiano-Installer/stargazers)
 [![License](https://img.shields.io/github/license/davidev3p0/Vencord-Italiano-Installer)](LICENSE)
 
-Installer Windows open source per [Vencord Italiano](https://github.com/davidev3p0/Vencord-Italiano).
+Installer Windows open source per **[Vencord Italiano](https://github.com/davidev3p0/Vencord-Italiano)**.
 
-**English:** open-source Windows installer for Vencord Italiano, with transparent GitHub Actions builds, SHA-256 verification and public source code.
+> Per gli utenti finali questo repository è solo il punto di download dell'installer. Traduzioni, plugin, RealVoiceTTS e aggiornamenti runtime vengono gestiti dal repository principale Vencord Italiano.
 
 ## Download
 
-Scarica sempre l'ultima release ufficiale:
+### [⬇️ Scarica Vencord-Italiano-Setup.exe](https://github.com/davidev3p0/Vencord-Italiano-Installer/releases/latest/download/Vencord-Italiano-Setup.exe)
 
-**[Scarica Vencord-Italiano-Setup.exe](https://github.com/davidev3p0/Vencord-Italiano-Installer/releases/latest/download/Vencord-Italiano-Setup.exe)**
+Non sono necessari Git, Node.js, pnpm, PowerShell o file ZIP.
 
-Non sono necessari Git, Node.js, pnpm, PowerShell o archivi ZIP.
+## Come funziona
 
-## Cosa fa
+L'installer ha un compito volutamente limitato:
 
-- rileva Discord Stable, Canary e PTB;
-- installa o aggiorna Vencord Italiano;
-- ripara una installazione esistente;
-- disinstalla Vencord ripristinando l'originale `app.asar`;
-- scarica i runtime esclusivamente dalle release pubbliche di `davidev3p0/Vencord-Italiano`;
-- verifica i digest SHA-256 pubblicati da GitHub;
-- usa backup e rollback durante le operazioni sensibili;
-- non elimina le impostazioni personali di Vencord.
+1. rileva Discord Stable, Canary e PTB;
+2. scarica i runtime della release più recente di Vencord Italiano;
+3. verifica i digest SHA-256 pubblicati da GitHub;
+4. crea un backup prima di modificare `app.asar`;
+5. installa, ripara o rimuove la patch;
+6. lascia a Vencord Italiano la gestione degli aggiornamenti successivi.
+
+Dopo la prima installazione **non è necessario scaricare un nuovo installer per ogni aggiornamento di Vencord Italiano**. Gli aggiornamenti runtime vengono gestiti direttamente dal progetto principale.
 
 | Client Discord | Supporto |
 | --- | --- |
@@ -37,32 +39,26 @@ Non sono necessari Git, Node.js, pnpm, PowerShell o archivi ZIP.
 ## Installazione
 
 1. Chiudi completamente Discord.
-2. Scarica `Vencord-Italiano-Setup.exe` dalla pagina Releases.
+2. Scarica `Vencord-Italiano-Setup.exe` dalla release più recente.
 3. Avvia l'installer.
 4. Seleziona il client Discord rilevato.
 5. Scegli **Installa / Aggiorna Vencord Italiano**.
-6. Al termine riapri Discord.
-
-Vencord Italiano dispone poi del proprio sistema di aggiornamento automatico collegato alle release del progetto principale.
+6. Riapri Discord.
 
 ## Verifica del download
 
 Ogni release pubblica anche `Vencord-Italiano-Setup.exe.sha256`.
-
-Su PowerShell:
 
 ```powershell
 Get-FileHash .\Vencord-Italiano-Setup.exe -Algorithm SHA256
 Get-Content .\Vencord-Italiano-Setup.exe.sha256
 ```
 
-I due SHA-256 devono coincidere.
-
-Le build ufficiali vengono inoltre prodotte da GitHub Actions e accompagnate da GitHub Artifact Attestation / build provenance.
+I due SHA-256 devono coincidere. Le build ufficiali sono inoltre prodotte da GitHub Actions con GitHub Artifact Attestation / build provenance.
 
 ## Sicurezza e trasparenza
 
-Il progetto usa solo la libreria standard Go e non utilizza:
+Il progetto usa la libreria standard Go e non utilizza:
 
 - packer o UPX;
 - cifratura dell'eseguibile;
@@ -71,23 +67,31 @@ Il progetto usa solo la libreria standard Go e non utilizza:
 - tecniche di bypass antivirus o SmartScreen;
 - telemetria o analytics specifici del progetto.
 
-### Stato della firma Authenticode
+### Firma Authenticode
 
-Le build pubbliche possono essere **non firmate Authenticode**. Per questo Windows SmartScreen può mostrare **Editore sconosciuto** anche quando hash e provenienza GitHub risultano corretti.
+Le build pubbliche possono essere **non firmate Authenticode**. In questo caso SmartScreen può mostrare **Editore sconosciuto** anche quando hash e provenienza GitHub risultano corretti.
 
-Il progetto ha una policy pubblica di code signing ed è predisposto per integrare un provider di firma attendibile quando ne soddisferà i requisiti. Non viene usato alcun certificato self-signed per fingere una firma pubblicamente attendibile.
+Il progetto è predisposto per integrare in futuro un provider di code signing pubblicamente attendibile quando ne soddisferà i requisiti. Non viene usato un certificato self-signed per simulare una firma attendibile.
 
-Documentazione:
+Approfondimenti:
 
+- [Architettura e modello di fiducia](ARCHITECTURE.md)
 - [Code signing policy](CODE_SIGNING_POLICY.md)
 - [Privacy policy](PRIVACY.md)
 - [Security policy](SECURITY.md)
+- [Processo di release](RELEASING.md)
 - [Roadmap](ROADMAP.md)
 - [Changelog](CHANGELOG.md)
 
-## Contribuire
+## Supporto e community
 
-Bug report, test su Stable/Canary/PTB e contributi sono benvenuti.
+- [Discussions](https://github.com/davidev3p0/Vencord-Italiano-Installer/discussions) per domande e feedback.
+- [Issues](https://github.com/davidev3p0/Vencord-Italiano-Installer/issues) per bug riproducibili.
+- [Vencord Italiano](https://github.com/davidev3p0/Vencord-Italiano) per traduzione, plugin, RealVoiceTTS e updater.
+
+Se il progetto ti è utile, una ⭐ su GitHub aiuta altre persone a trovarlo.
+
+## Contribuire
 
 Leggi [CONTRIBUTING.md](CONTRIBUTING.md) prima di aprire una pull request. Per assistenza consulta [SUPPORT.md](SUPPORT.md).
 
@@ -100,10 +104,6 @@ go test ./...
 go vet ./...
 go build -trimpath -o Vencord-Italiano-Setup.exe .
 ```
-
-## Progetto correlato
-
-- [Vencord Italiano](https://github.com/davidev3p0/Vencord-Italiano)
 
 ## Licenza e marchi
 

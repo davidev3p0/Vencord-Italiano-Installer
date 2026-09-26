@@ -1,0 +1,24 @@
+name: Feature request
+description: Proponi un miglioramento dell'installer
+title: "[Feature] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necessità
+      description: Quale problema risolverebbe questa funzione?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta
+      description: Descrivi il comportamento desiderato.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impatto su stabilità e sicurezza
+      description: Se noto, indica eventuali rischi o compatibilità coinvolte.

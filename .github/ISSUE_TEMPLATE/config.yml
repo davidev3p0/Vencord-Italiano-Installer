@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/SECURITY.md
+    about: Per problemi di sicurezza consulta prima la policy.
+  - name: Vencord Italiano
+    url: https://github.com/davidev3p0/Vencord-Italiano
+    about: Per traduzione, plugin e updater interno usa il repository principale.

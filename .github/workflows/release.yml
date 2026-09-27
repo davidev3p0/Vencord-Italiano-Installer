@@ -105,6 +105,6 @@ jobs:
           Privacy policy: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/PRIVACY.md
           Security policy: https://github.com/davidev3p0/Vencord-Italiano-Installer/blob/main/SECURITY.md
 
-          Questa prima release può essere non firmata. Le release firmate useranno SignPath secondo la Code signing policy del progetto.
+          Le build possono essere non firmate Authenticode. Consulta la Code signing policy del progetto per lo stato aggiornato della firma.
           "@
           gh release create $tag Vencord-Italiano-Setup.exe Vencord-Italiano-Setup.exe.sha256 --target "${{ github.sha }}" --title "Vencord Italiano Installer v${{ inputs.version }}" --notes $notes
